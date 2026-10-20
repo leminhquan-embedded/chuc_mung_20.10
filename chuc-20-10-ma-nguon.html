@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chúc mừng 20/10 Mẹ iu</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&family=Playfair+Display:ital,wght@1,700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one centred column. A closed bouquet sits in the middle; tapping it opens the flowers, lets petals fall and writes the wish underneath. */
+:root {
+  --bg: #fff0f4;
+  --bg2: #ffd6e2;
+  --ink: #4b1d2f;
+  --muted: #8a5468;
+  --rose: #d92f5c;
+  --petal: #f58fab;
+  --blush: #ffc2d4;
+  --leaf: #3f7f62;
+  --gold: #f0b43a;
+  --paper: #fdeacb;
+  --font-body: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-script: 'Dancing Script', 'Segoe Script', cursive;
+  color-scheme: light;
+}
+html { background: var(--bg); }
+body {
+  margin: 0;
+  min-height: 100%;
+  padding-block: 20px 36px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background-color: var(--bg);
+  background-image: radial-gradient(90% 55% at 50% 0%, var(--bg2), transparent 70%);
+  color: var(--ink);
+  font: 400 16px/1.65 var(--font-body);
+  overflow-x: hidden;
+}
+#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.stage {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.eyebrow {
+  margin: 8px 0 0;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--rose);
+}
+h1 {
+  margin: 0;
+  font: italic 700 clamp(2rem, 9vw, 3.2rem)/1.12 var(--font-display);
+  text-wrap: balance;
+}
+.bouquet {
+  width: min(84vw, 340px);
+  margin-top: 4px;
+  cursor: pointer;
+  border-radius: 24px;
+  -webkit-tap-highlight-color: transparent;
+}
+.bouquet:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; }
+svg { display: block; width: 100%; height: auto; max-width: 100%; }
+.petals {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(.2) rotate(-45deg);
+  transition: transform 1.2s cubic-bezier(.2, 1.35, .4, 1);
+  transition-delay: var(--d, 0ms);
+}
+.open .petals { transform: scale(1) rotate(0deg); }
+.open .sway { animation: sway 4.5s ease-in-out infinite alternate; }
+.sway { transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes sway { from { transform: rotate(-1.2deg); } to { transform: rotate(1.2deg); } }
+.btn {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.05rem;
+  background: var(--rose);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 34px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #a21f44;
+  transition: transform .12s, box-shadow .12s;
+}
+.btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #a21f44; }
+.btn:focus-visible, .ghost:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+.hint { margin: -2px 0 0; font-size: .85rem; color: var(--muted); }
+.wish {
+  width: 100%;
+  margin-top: 4px;
+  padding: 22px 22px 18px;
+  text-align: left;
+  background: rgba(255, 255, 255, .75);
+  border: 1px solid var(--blush);
+  border-radius: 18px;
+  animation: rise .8s ease both;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.script { margin: 0 0 6px; font: 600 1.7rem/1.2 var(--font-script); color: var(--rose); }
+.wish p.text { margin: 0; font-size: 1.02rem; }
+#rest { visibility: hidden; }
+.sign { margin: 14px 0 0; font: 600 1.5rem/1.2 var(--font-script); color: var(--leaf); text-align: right; min-height: 1.8rem; }
+.ghost {
+  margin-top: 10px;
+  font: inherit;
+  font-size: .9rem;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--petal);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before { animation: none !important; transition: none !important; }
+}
+</style>
+
+<main class="stage">
+  <p class="eyebrow">20/10 · Ngày Phụ nữ Việt Nam</p>
+  <h1 id="title">Mẹ ơi, có một bó hoa nhỏ cho Mẹ</h1>
+
+  <div class="bouquet" id="bouquet" role="button" tabindex="0" aria-label="Chạm để hoa nở">
+    <svg id="art" viewBox="0 0 320 340" aria-hidden="true">
+      <g id="stems"></g>
+      <g id="flowers"></g>
+      <!-- wrapping paper -->
+      <path d="M100 250 L220 250 L178 330 Q160 340 142 330 Z" fill="var(--paper)" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M122 252 L150 332 M198 252 L170 332" stroke="var(--gold)" stroke-width="1.5" opacity=".6" fill="none"/>
+      <!-- ribbon -->
+      <g transform="translate(160 262)">
+        <ellipse cx="-16" cy="0" rx="16" ry="8" fill="var(--rose)" transform="rotate(-16 -16 0)"/>
+        <ellipse cx="16" cy="0" rx="16" ry="8" fill="var(--rose)" transform="rotate(16 16 0)"/>
+        <circle r="6" fill="#a21f44"/>
+        <path d="M-3 4 L-14 30 M3 4 L14 30" stroke="var(--rose)" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+
+  <button class="btn" id="open" type="button">Chạm để hoa nở</button>
+  <p class="hint" id="hint">Chạm vào bó hoa cũng được</p>
+
+  <section class="wish" id="wish" hidden>
+    <p class="script">Gửi Mẹ iu của con,</p>
+    <p class="text"><span id="typed"></span><span id="rest"></span></p>
+    <p class="sign" id="sign"></p>
+    <button class="ghost" id="again" type="button">Xem lại từ đầu</button>
+  </section>
+</main>
+<canvas id="fx"></canvas>
+
+<script>
+(function () {
+  var WISH = "Mẹ iu ơi, nhân ngày 20/10, con gửi tặng Mẹ bó hoa nhỏ này cùng thật nhiều cái ôm từ xa. Cảm ơn Mẹ vì suốt bao năm qua đã luôn tần tảo, hy sinh và lo lắng cho cả nhà từ từng bữa cơm ngon đến từng giấc ngủ ấm. Dù con có lớn khôn và đi xa đến đâu, trong mắt con, vòng tay của Mẹ vẫn luôn là nơi bình yên và ấm áp nhất để trở về. Con chỉ mong thời gian trôi chậm lại một chút để Mẹ của con mãi dồi dào sức khỏe, bớt đi những lo toan vất vả, mỗi ngày đều cười thật tươi, luôn trẻ đẹp và hạnh phúc bên gia đình mình. Con thương và biết ơn Mẹ nhiều lắm!";
+  var SIGN = "Con trai của Mẹ — Quân";
+
+  var $ = function (id) { return document.getElementById(id); };
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // bouquet: x, y, scale, outer petal colour, inner petal colour, bloom delay (ms)
+  var defs = [
+    [160, 92, 1.15, 'var(--rose)', 'var(--petal)', 0],
+    [92, 132, .95, 'var(--petal)', 'var(--blush)', 200],
+    [228, 132, .95, 'var(--petal)', 'var(--blush)', 340],
+    [124, 178, .8, 'var(--blush)', 'var(--petal)', 480],
+    [196, 178, .8, 'var(--rose)', 'var(--blush)', 620]
+  ];
+  var stems = '', flowers = '', i, k;
+  defs.forEach(function (f, idx) {
+    var x = f[0], y = f[1], cx = (x + 160) / 2, cy = (y + 300) / 2 + 18;
+    stems += '<path d="M160 300 Q' + cx + ' ' + cy + ' ' + x + ' ' + y + '" stroke="var(--leaf)" stroke-width="4" stroke-linecap="round" fill="none"/>';
+    var t = .55, lx = (1 - t) * (1 - t) * 160 + 2 * (1 - t) * t * cx + t * t * x;
+    var ly = (1 - t) * (1 - t) * 300 + 2 * (1 - t) * t * cy + t * t * y;
+    var side = x < 160 ? -1 : 1;
+    if (x === 160) side = 1;
+    stems += '<ellipse cx="' + (lx + side * 12) + '" cy="' + ly + '" rx="14" ry="6" fill="var(--leaf)" transform="rotate(' + (side * -32) + ' ' + (lx + side * 12) + ' ' + ly + ')"/>';
+    var p = '';
+    for (k = 0; k < 8; k++) p += '<ellipse cx="0" cy="-17" rx="9" ry="17" fill="' + f[3] + '" transform="rotate(' + (k * 45) + ')"/>';
+    for (k = 0; k < 6; k++) p += '<ellipse cx="0" cy="-10" rx="6" ry="11" fill="' + f[4] + '" transform="rotate(' + (k * 60 + 30) + ')"/>';
+    p += '<circle r="6" fill="var(--gold)"/>';
+    flowers += '<g class="sway" style="animation-delay:-' + (idx * .9) + 's"><g transform="translate(' + x + ' ' + y + ') scale(' + f[2] + ')"><g class="petals" style="--d:' + f[5] + 'ms">' + p + '</g></g></g>';
+  });
+  $('stems').innerHTML = stems;
+  $('flowers').innerHTML = flowers;
+
+  // falling petals
+  var cv = $('fx'), ctx = cv.getContext('2d');
+  var W = 0, H = 0, parts = [], raf = 0, isOpen = false, lastSpawn = 0;
+  var COLORS = ['#f58fab', '#ffc2d4', '#d92f5c', '#ffd9e3', '#f0b43a'];
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function petal(y) {
+    parts.push({
+      x: Math.random() * W, y: y, vy: .8 + Math.random() * 1.2, vx: (Math.random() - .5) * .6,
+      ph: Math.random() * 6, rot: Math.random() * 6, vr: (Math.random() - .5) * .08,
+      s: .7 + Math.random() * .8, c: COLORS[Math.floor(Math.random() * COLORS.length)]
+    });
+  }
+  function tick(ts) {
+    ctx.clearRect(0, 0, W, H);
+    if (isOpen && ts - lastSpawn > 380 && parts.length < 34) { petal(-12); lastSpawn = ts; }
+    for (var i = parts.length - 1; i >= 0; i--) {
+      var p = parts[i];
+      p.ph += .03; p.x += p.vx + Math.sin(p.ph) * .9; p.y += p.vy; p.rot += p.vr;
+      if (p.y > H + 16) { parts.splice(i, 1); continue; }
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(p.s, p.s * (.6 + .4 * Math.abs(Math.cos(p.ph))));
+      ctx.fillStyle = p.c; ctx.beginPath(); ctx.ellipse(0, 0, 8, 5, 0, 0, 6.283); ctx.fill(); ctx.restore();
+    }
+    raf = (isOpen || parts.length) ? requestAnimationFrame(tick) : 0;
+    if (!raf) ctx.clearRect(0, 0, W, H);
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+
+  var typer = 0, timer = 0;
+  function typeWish() {
+    var typed = $('typed'), rest = $('rest');
+    $('sign').textContent = '';
+    if (reduce) { typed.textContent = WISH; rest.textContent = ''; $('sign').textContent = SIGN; return; }
+    var n = 0;
+    typed.textContent = ''; rest.textContent = WISH;
+    typer = setInterval(function () {
+      n += 1;
+      typed.textContent = WISH.slice(0, n);
+      rest.textContent = WISH.slice(n);
+      if (n >= WISH.length) { clearInterval(typer); $('sign').textContent = SIGN; }
+    }, 28);
+  }
+
+  function open() {
+    if (isOpen) return;
+    isOpen = true;
+    $('art').classList.add('open');
+    $('open').hidden = true;
+    $('hint').textContent = '';
+    $('title').textContent = 'Chúc mừng 20/10 Mẹ iu!';
+    timer = setTimeout(function () {
+      $('wish').hidden = false;
+      typeWish();
+    }, reduce ? 0 : 900);
+    if (!reduce) { for (var n = 0; n < 26; n++) petal(-Math.random() * H * .6); kick(); }
+  }
+
+  function reset() {
+    clearTimeout(timer); clearInterval(typer);
+    isOpen = false; parts.length = 0;
+    $('art').classList.remove('open');
+    $('wish').hidden = true;
+    $('open').hidden = false;
+    $('hint').textContent = 'Chạm vào bó hoa cũng được';
+    $('title').textContent = 'Mẹ ơi, có một bó hoa nhỏ cho Mẹ';
+    window.scrollTo(0, 0);
+  }
+
+  $('open').addEventListener('click', open);
+  $('bouquet').addEventListener('click', open);
+  $('bouquet').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+  });
+  $('again').addEventListener('click', reset);
+})();
+</script>

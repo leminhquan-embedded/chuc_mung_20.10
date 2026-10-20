@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đèn lồng 20/10</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&family=Playfair+Display:ital,wght@1,700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one centred column at dusk. Five hanging lanterns in a row; each one lights up with its own wish, and the last one unlocks the closing greeting. */
+:root {
+  --bg: #23122e;
+  --glow: #ff8f70;
+  --ink: #fff1e6;
+  --muted: #dbb8c6;
+  --gold: #ffcf5a;
+  --lantern: #ff5a3c;
+  --lantern-dark: #6e2540;
+  --card: rgba(255, 241, 230, .08);
+  --line: rgba(255, 241, 230, .2);
+  --font-body: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-script: 'Dancing Script', 'Segoe Script', cursive;
+  color-scheme: dark;
+}
+html { background: var(--bg); }
+body {
+  margin: 0;
+  min-height: 100%;
+  padding-block: 20px 36px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background-color: var(--bg);
+  background-image: linear-gradient(180deg, transparent 35%, rgba(255, 143, 112, .38) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font: 400 16px/1.65 var(--font-body);
+  overflow-x: hidden;
+}
+#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.stage {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.eyebrow {
+  margin: 8px 0 0;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+h1 {
+  margin: 0;
+  font: italic 700 clamp(1.9rem, 8.5vw, 3rem)/1.15 var(--font-display);
+  text-wrap: balance;
+}
+.sub { margin: 0; color: var(--muted); font-size: .95rem; text-wrap: balance; }
+.row {
+  width: 100%;
+  margin-top: 8px;
+  padding-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  border-top: 2px solid var(--line);
+}
+.lamp {
+  min-width: 0;
+  font: inherit;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0 0 6px;
+  cursor: pointer;
+  border-radius: 14px;
+  -webkit-tap-highlight-color: transparent;
+}
+.lamp:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.lamp svg { display: block; width: 100%; max-width: 100%; height: auto; overflow: visible; transform-origin: 50% 0; animation: swing 4s ease-in-out infinite alternate; }
+@keyframes swing { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+.lamp .on { opacity: 0; transition: opacity .6s; }
+.lamp .halo { opacity: 0; transition: opacity .8s; }
+.lamp.lit .on, .lamp.lit .halo { opacity: 1; }
+.lamp .name { display: block; margin-top: 2px; font-size: .72rem; font-weight: 600; letter-spacing: .02em; }
+.lamp.lit { color: var(--gold); }
+.card {
+  width: 100%;
+  min-height: 150px;
+  padding: 20px 20px 18px;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.card .tag { margin: 0 0 4px; font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.card .msg { margin: 0; font-size: 1.05rem; animation: rise .6s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.card .count { margin: 14px 0 0; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sign { margin: 12px 0 0; font: 600 1.6rem/1.2 var(--font-script); color: var(--gold); text-align: right; }
+.ghost {
+  margin-top: 8px;
+  font: inherit;
+  font-size: .9rem;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+.ghost:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before { animation: none !important; transition: none !important; }
+}
+</style>
+
+<main class="stage">
+  <p class="eyebrow">20/10 · Ngày Phụ nữ Việt Nam</p>
+  <h1 id="title">Thương chúc các Mợ, các Em và Mẹ iu</h1>
+  <p class="sub" id="sub">Chạm vào từng chiếc đèn lồng để thắp sáng một lời chúc.</p>
+
+  <div class="row" id="row"></div>
+
+  <section class="card" id="card" aria-live="polite"></section>
+</main>
+<canvas id="fx"></canvas>
+
+<script>
+(function () {
+  var SIGN = "Thương gửi — Quân";
+  var ITEMS = [
+    { k: 'Sức khỏe', t: 'Chúc các Mợ, các Em và Mẹ iu luôn dồi dào sức khỏe, mỗi sớm mai thức dậy đều tràn đầy năng lượng tích cực, ăn ngon miệng, ngủ thật sâu giấc và lúc nào cũng giữ được thần thái tươi tắn, rạng ngời nhất.' },
+    { k: 'Bình an', t: 'Mong cho mọi bộn bề, áp lực trong công việc hay cuộc sống thường ngày đều nhẹ nhàng lướt qua, nhường chỗ cho sự thảnh thơi và bình yên trong tâm hồn để Mẹ iu, các Mợ và các Em luôn cảm thấy an nhiên, nhẹ nhõm.' },
+    { k: 'Niềm vui', t: 'Chúc những bông hoa đẹp nhất của đại gia đình mình ngày nào cũng ngập tràn tiếng cười và niềm hạnh phúc; chúc Mẹ iu và các Mợ mãi trẻ đẹp, viên mãn, còn các Em thì học tập hay công việc đều thuận buồm xuôi gió, rực rỡ theo cách riêng của mình.' },
+    { k: 'Đầm ấm', t: 'Chúc cho đại gia đình mình lúc nào cũng gắn kết, quây quần và tràn ngập hơi ấm. Chính sự dịu dàng, chu đáo, đảm đang của Mẹ iu, các Mợ cùng sự rộn ràng, đáng yêu của các Em đã luôn giữ cho ngọn lửa đại gia đình mình thật ấm áp.' },
+    { k: 'Biết ơn', t: 'Từ tận đáy lòng, cảm ơn Mẹ iu và các Mợ đã luôn bao dung, yêu thương và chăm lo chu toàn cho gia đình; cảm ơn các Em đã luôn là những mảnh ghép tuyệt vời, mang lại thật nhiều niềm vui và tiếng cười cho cả nhà.' }
+  ];
+  var FINALE = 'Nhân ngày Phụ nữ Việt Nam 20/10, chúc các Mợ, các Em và Mẹ iu một ngày lễ thật trọn vẹn, ngập tràn hoa tươi, quà xinh và những lời yêu thương ngọt ngào nhất. Mong mọi điều may mắn và tốt đẹp sẽ luôn đồng hành cùng những người phụ nữ tuyệt vời của gia đình mình suốt 365 ngày trong năm!';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function lampSvg(i) {
+    return '<svg viewBox="0 0 60 104" aria-hidden="true" style="animation-delay:-' + (i * .8) + 's">' +
+      '<circle class="halo" cx="30" cy="46" r="40" fill="url(#hg' + i + ')"/>' +
+      '<defs><radialGradient id="hg' + i + '"><stop offset="0" stop-color="#ffcf5a" stop-opacity=".6"/><stop offset="1" stop-color="#ffcf5a" stop-opacity="0"/></radialGradient></defs>' +
+      '<line x1="30" y1="0" x2="30" y2="12" stroke="#ffcf5a" stroke-width="2"/>' +
+      '<rect x="19" y="11" width="22" height="7" rx="2" fill="#ffcf5a"/>' +
+      '<ellipse cx="30" cy="46" rx="25" ry="29" fill="#6e2540"/>' +
+      '<ellipse class="on" cx="30" cy="46" rx="25" ry="29" fill="#ff5a3c"/>' +
+      '<ellipse class="on" cx="30" cy="42" rx="13" ry="22" fill="#ff8f4d" opacity=".75"/>' +
+      '<ellipse cx="30" cy="46" rx="25" ry="29" fill="none" stroke="#ffcf5a" stroke-opacity=".5" stroke-width="1.2"/>' +
+      '<path d="M30 17 V75 M18 20 Q8 46 18 72 M42 20 Q52 46 42 72" stroke="#ffcf5a" stroke-opacity=".45" stroke-width="1.2" fill="none"/>' +
+      '<rect x="19" y="73" width="22" height="7" rx="2" fill="#ffcf5a"/>' +
+      '<line x1="30" y1="80" x2="30" y2="96" stroke="#ffcf5a" stroke-width="2"/>' +
+      '<circle cx="30" cy="98" r="3.5" fill="#ff5a3c"/>' +
+      '</svg>';
+  }
+
+  var row = $('row'), lamps = [], lit = {}, count = 0;
+  ITEMS.forEach(function (it, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'lamp';
+    b.setAttribute('aria-pressed', 'false');
+    b.setAttribute('aria-label', 'Đèn lồng ' + it.k);
+    b.innerHTML = lampSvg(i) + '<span class="name">' + it.k + '</span>';
+    b.addEventListener('click', function () { press(i); });
+    row.appendChild(b);
+    lamps.push(b);
+  });
+
+  function render(tag, msg, extra) {
+    var c = $('card');
+    c.innerHTML = '<p class="tag"></p><p class="msg"></p>' + (extra || '');
+    c.querySelector('.tag').textContent = tag;
+    c.querySelector('.msg').textContent = msg;
+  }
+  function intro() {
+    render('Lời chúc', 'Mỗi chiếc đèn lồng giữ một lời chúc gửi đến các Mợ, các Em và Mẹ iu. Hãy thắp đủ cả năm chiếc nhé.',
+      '<p class="count">0/5 đèn đã sáng</p>');
+  }
+
+  function press(i) {
+    var first = !lit[i];
+    if (first) { lit[i] = true; count += 1; lamps[i].classList.add('lit'); lamps[i].setAttribute('aria-pressed', 'true'); }
+    if (count === ITEMS.length && first) { setTimeout(finale, reduce ? 0 : 900); }
+    render(ITEMS[i].k, ITEMS[i].t, '<p class="count">' + count + '/' + ITEMS.length + ' đèn đã sáng</p>');
+  }
+
+  function finale() {
+    $('title').textContent = 'Chúc mừng 20/10!';
+    $('sub').textContent = '';
+    render('Gửi các Mợ, các Em và Mẹ iu', FINALE, '<p class="sign"></p><button class="ghost" id="again" type="button">Tắt đèn, xem lại</button>');
+    $('card').querySelector('.sign').textContent = SIGN;
+    $('again').addEventListener('click', reset);
+    embers = true;
+    if (!reduce) kick();
+  }
+
+  function reset() {
+    embers = false; parts.length = 0; lit = {}; count = 0;
+    lamps.forEach(function (l) { l.classList.remove('lit'); l.setAttribute('aria-pressed', 'false'); });
+    $('title').textContent = 'Thương chúc các Mợ, các Em và Mẹ iu';
+    $('sub').textContent = 'Chạm vào từng chiếc đèn lồng để thắp sáng một lời chúc.';
+    intro();
+    window.scrollTo(0, 0);
+  }
+
+  // rising embers after the last lantern is lit
+  var cv = $('fx'), ctx = cv.getContext('2d');
+  var W = 0, H = 0, parts = [], raf = 0, embers = false, lastSpawn = 0;
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function spawn(y) {
+    parts.push({ x: Math.random() * W, y: y, vy: .6 + Math.random() * 1.1, ph: Math.random() * 6, r: 1.2 + Math.random() * 2.2, a: .5 + Math.random() * .5, c: Math.random() < .5 ? '#ffcf5a' : '#ff8f70' });
+  }
+  function tick(ts) {
+    ctx.clearRect(0, 0, W, H);
+    if (embers && ts - lastSpawn > 140 && parts.length < 60) { spawn(H + 8); lastSpawn = ts; }
+    for (var i = parts.length - 1; i >= 0; i--) {
+      var p = parts[i];
+      p.ph += .03; p.x += Math.sin(p.ph) * .5; p.y -= p.vy;
+      if (p.y < -10) { parts.splice(i, 1); continue; }
+      ctx.globalAlpha = p.a * Math.min(1, p.y / (H * .3)); ctx.fillStyle = p.c;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    raf = (embers || parts.length) ? requestAnimationFrame(tick) : 0;
+    if (!raf) ctx.clearRect(0, 0, W, H);
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+
+  intro();
+})();
+</script>
